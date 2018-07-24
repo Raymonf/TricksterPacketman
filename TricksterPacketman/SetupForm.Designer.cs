@@ -77,6 +77,7 @@
             // 
             // StatusLabel
             // 
+            this.StatusLabel.BackColor = System.Drawing.SystemColors.Control;
             this.StatusLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StatusLabel.Name = "StatusLabel";
             this.StatusLabel.Size = new System.Drawing.Size(125, 20);
@@ -145,6 +146,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(441, 229);
             this.Controls.Add(this.BtnPreset_tTO);
             this.Controls.Add(this.BtnPreset_LTO);

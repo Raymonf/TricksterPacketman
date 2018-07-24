@@ -111,22 +111,24 @@
             this.PauseBtn.TabIndex = 2;
             this.PauseBtn.Text = "Pause Output";
             this.PauseBtn.UseVisualStyleBackColor = true;
+            this.PauseBtn.Click += new System.EventHandler(this.PauseBtn_Click);
             // 
             // StatusStrip
             // 
             this.StatusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusLbl});
-            this.StatusStrip.Location = new System.Drawing.Point(0, 542);
+            this.StatusStrip.Location = new System.Drawing.Point(0, 541);
             this.StatusStrip.Name = "StatusStrip";
-            this.StatusStrip.Size = new System.Drawing.Size(1206, 24);
+            this.StatusStrip.Size = new System.Drawing.Size(1206, 25);
             this.StatusStrip.TabIndex = 3;
             this.StatusStrip.Text = "statusStrip1";
             // 
             // StatusLbl
             // 
+            this.StatusLbl.BackColor = System.Drawing.SystemColors.Control;
             this.StatusLbl.Name = "StatusLbl";
-            this.StatusLbl.Size = new System.Drawing.Size(79, 19);
+            this.StatusLbl.Size = new System.Drawing.Size(74, 20);
             this.StatusLbl.Text = "Capturing";
             // 
             // InfoTxt
@@ -161,6 +163,7 @@
             this.CopyHexBtn.TabIndex = 6;
             this.CopyHexBtn.Text = "Copy Selected Packet";
             this.CopyHexBtn.UseVisualStyleBackColor = true;
+            this.CopyHexBtn.Click += new System.EventHandler(this.CopyHexBtn_Click);
             // 
             // ListForm
             // 

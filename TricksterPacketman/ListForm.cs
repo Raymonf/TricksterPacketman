@@ -141,11 +141,23 @@ namespace TricksterPacketman
                 return;
             }
 
-            var packet = Packets[int.Parse(PacketList.Items[idx].SubItems[0].Text)];
+            var packet = Packets[int.Parse(PacketList.Items[idx].SubItems[0].Text) - 1];
 
             InfoTxt.Text = $"Time: {packet.Time.ToShortTimeString()}\r\nOpcode: 0x{Util.ByteToHex(BitConverter.GetBytes((ushort)packet.Opcode).Reverse().ToArray()).Replace(" ", "")}";
 
             HexTxt.Text = Util.ByteToHex(packet.Data);
+        }
+
+        private void CopyHexBtn_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(HexTxt.Text);
+        }
+
+        private void PauseBtn_Click(object sender, EventArgs e)
+        {
+            Paused = !Paused;
+
+            PauseBtn.Text = Paused ? "Resume Output" : "Pause Output";
         }
     }
 }
