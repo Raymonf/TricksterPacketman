@@ -67,15 +67,51 @@ namespace TricksterPacketman
                     time.Hour, time.Minute, time.Second, time.Millisecond, len,
                     srcIp, srcPort, dstIp, dstPort, isOutbound);
 
-                try
+                //try
                 {
-                    var packetNum = 0;
-                    var i = 0;
-                    while (i < tcpPacket.PayloadData.Length)
+
+                    var data = tcpPacket.PayloadData;
+
+                    if (Sessions[sKey].LastPartialPacket != null)
                     {
-                        var bytes = tcpPacket.PayloadData.Skip(i).ToArray();
+                        var last = Sessions[sKey].LastPartialPacket;
+                        var newData = new byte[last.Length + data.Length];
+                        Array.Copy(last, 0, newData, 0, last.Length);
+                        Array.Copy(data, 0, newData, last.Length, data.Length);
+                        Sessions[sKey].LastPartialPacket = null;
+                        data = newData;
+
+                        // Restore the key so we can unpack this packet
+                        Sessions[sKey].Key = Sessions[sKey].LastKey;
+                    }
+
+                    var i = 0;
+                    var packetNum = 0;
+                    while (i < data.Length)
+                    {
+                        var bytes = data.Skip(i).ToArray();
+
+                        // Sometimes, we'll get a packet that's less than 9 bytes.
+                        // We should check to see if the packet is < 9 bytes and store it for the next time.
+                        // After all, we can't unpack/decode a header that's less than 9 bytes long.
+                        if (bytes.Length < 9)
+                        {
+                            // Store it!
+                            Sessions[sKey].LastPartialPacket = bytes;
+                            return;
+                        }
 
                         var subLen = Unpacker.Unpack(Sessions[sKey], bytes);
+
+                        // If the packet that we're supposed to unpack is larger than the buffer's end...
+                        // Well, we should store it for the next time.
+                        if (i + subLen > data.Length)
+                        {
+                            // Store it!
+                            Sessions[sKey].LastPartialPacket = bytes;
+                            return;
+                        }
+
                         i += subLen;
 
                         var pkt = bytes.Take(subLen).ToArray();
@@ -99,24 +135,25 @@ namespace TricksterPacketman
                             {
                                 PacketList.Items.Add(new ListViewItem(new string[]
                                 {
-                                Packets.Count.ToString(),
-                                time.ToShortTimeString(),
-                                $"{srcPort} > {dstPort}",
-                                isOutbound ? "Out" : "In",
-                                $"0x{Util.ByteToHex(BitConverter.GetBytes(opcode).Reverse().ToArray()).Replace(" ", "")}",
-                                $"{Util.ByteToHex(lenNoDum)} ({lenNoDum})"
+                                    Packets.Count.ToString(),
+                                    time.ToShortTimeString() + "." + time.Millisecond,
+                                    $"{srcPort} > {dstPort}",
+                                    isOutbound ? "Out" : "In",
+                                    $"0x{Util.ByteToHex(BitConverter.GetBytes(opcode).Reverse().ToArray()).Replace(" ", "")}",
+                                    $"{Util.ByteToHex(lenNoDum)} ({lenNoDum})"
                                 }));
                             });
                         }
 
                         packetNum++;
 
-                        if (packetNum > 50) break;
+                        //if (packetNum > 50) break;
                     }
                 }
-                catch
+                //catch (Exception exc)
                 {
-                    Console.WriteLine("Unable to unpack packet");
+                    //Console.WriteLine("Unable to unpack packet");
+                    //throw exc;
                 }
             }
         }

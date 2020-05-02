@@ -235,6 +235,8 @@ namespace TrickEncCS
 
             if ((al & 1) > 0)
             {
+                sessionInfo.LastKey = sessionInfo.Key;
+
                 pRcvData[7] = 0;
                 header.Packing = (byte)(al ^ 1);
 

@@ -10,7 +10,9 @@ namespace TrickEncCS
         public bool IsStrict { get; set; } = false;
         public bool IsFirst { get; set; } = true;
         public byte Key { get; set; } = 0x01;
+        public byte LastKey { get; set; } = 0x01;
         public ushort Sequence { get; set; } = 0x00;
+        public byte[] LastPartialPacket { get; set; } = null;
 
         public Client Client { get; set; } = new Client();
     };
