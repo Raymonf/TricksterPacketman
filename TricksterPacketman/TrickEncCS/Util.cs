@@ -27,6 +27,32 @@ namespace TrickEncCS
             return BitConverter.ToString(b).Replace("-", " ");
         }
 
+        public static void AssertByteEqual(byte[] n, byte[] b)
+        {
+            if (b.Length != n.Length)
+            {
+                throw new Exception("unequal");
+            }
+
+            for (int i = 0; i < b.Length; i++)
+            {
+                if (n[i] != b[i])
+                {
+                    throw new Exception("unequal");
+                }
+            }
+        }
+
+        public static byte[] ByteCopy(byte[] b)
+        {
+            byte[] n = new byte[b.Length];
+            for (int i = 0; i < b.Length; i++)
+            {
+                n[i] = b[i];
+            }
+            return n;
+        }
+
         public static void CopyTo(byte[] b, int i, ushort us)
         {
             b[i + 0] = (byte)us;

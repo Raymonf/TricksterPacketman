@@ -29,10 +29,10 @@ namespace TrickEncCS
 
     public class Common
     {
-        public static byte MakeChecksum(byte[] esi, byte key)
+        public static byte MakeChecksum(byte[] packet, byte key)
         {
-            int ecx = esi[0];
-            int edx = esi[2];
+            int ecx = packet[0];
+            int edx = packet[2];
             ecx <<= 8;
             ecx += edx;
             ecx = KeyTable.Table[(ushort)ecx];
@@ -41,13 +41,13 @@ namespace TrickEncCS
             edx += ecx;
             byte bl = KeyTable.Table[(ushort)edx];
 
-            ecx = esi[3];
-            edx = esi[1];
+            ecx = packet[3];
+            edx = packet[1];
             ecx <<= 8;
             ecx += edx;
             ecx = KeyTable.Table[(ushort)ecx];
 
-            edx = esi[6];
+            edx = packet[6];
             edx <<= 8;
             edx += ecx;
             ecx = edx;
@@ -60,10 +60,22 @@ namespace TrickEncCS
             al = KeyTable.Table[(ushort)ecx];
 
             return al;
+
+            /*
+            var x = KeyTable.Table[(packet[0] << 8) + packet[2]];
+            var bl = KeyTable.Table[(key << 8) + x];
+
+            var y = KeyTable.Table[(packet[3] << 8) + packet[1]];
+            var al = KeyTable.Table[(packet[6] << 8) + y];
+
+            return KeyTable.Table[(bl << 8) + al];*/
         }
 
         public static void UpdateKey(SessionInfo sessionInfo, int tail)
         {
+            //byte key = sessionInfo.Key;
+            //sessionInfo.Key = (byte)(KeyTable.Table[(ushort)((tail & 0xff) << 8) + key] + key);
+
             byte key = sessionInfo.Key;
             int edx = tail & 0xff;
             edx <<= 8;
