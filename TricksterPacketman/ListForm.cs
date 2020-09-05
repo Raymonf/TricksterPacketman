@@ -67,7 +67,7 @@ namespace TricksterPacketman
                     time.Hour, time.Minute, time.Second, time.Millisecond, len,
                     srcIp, srcPort, dstIp, dstPort, isOutbound);
 
-                //try
+                try
                 {
 
                     var data = tcpPacket.PayloadData;
@@ -150,9 +150,9 @@ namespace TricksterPacketman
                         //if (packetNum > 50) break;
                     }
                 }
-                //catch (Exception exc)
+                catch (Exception exc)
                 {
-                    //Console.WriteLine("Unable to unpack packet");
+                    Console.WriteLine("Unable to unpack packet");
                     //throw exc;
                 }
             }
